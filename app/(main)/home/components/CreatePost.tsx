@@ -1,9 +1,8 @@
 "use client";
 
-import { Button, Flex, Input } from "@chakra-ui/react";
+import { Box, Button, Flex, Input } from "@chakra-ui/react";
 import { useState } from "react";
-import { auth, storage } from "@/lib/firebase/firebase";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { auth } from "@/lib/firebase/firebase";
 
 export default function CreatePost() {
   const [postTitle, setPostTitle] = useState("");
@@ -41,21 +40,28 @@ export default function CreatePost() {
   };
 
   return (
-    <Flex direction="column" gap={2}>
-      <Input
-        placeholder="O que você está pensando no momento?..."
-        value={postTitle}
-        onChange={(e) => setPostTitle(e.target.value)}
-        bgColor="gray.100"
-        px="16px"
-        w="400px"
-        rounded="full"
-        color="black"
-        _placeholder={{ color: "black" }}
-      />
-      <Button onClick={enviarPedido} bgColor="black" color="white">
-        Postar
-      </Button>
-    </Flex>
+    <Box bgColor="#FFF5DF" px={12} py={12} rounded="3xl">
+      <Flex direction="row" gap={2}>
+        <Input
+          placeholder="O que você está pensando no momento?..."
+          value={postTitle}
+          onChange={(e) => setPostTitle(e.target.value)}
+          bgColor="gray.100"
+          px="16px"
+          w="400px"
+          rounded="full"
+          color="black"
+          _placeholder={{ color: "black" }}
+        />
+        <Button
+          onClick={enviarPedido}
+          bgColor="black"
+          color="white"
+          rounded="full"
+        >
+          Postar
+        </Button>
+      </Flex>
+    </Box>
   );
 }

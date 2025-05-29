@@ -20,7 +20,7 @@ export default function SideButtons() {
           color="black"
           px={12}
         >
-          Messagens
+          Mensagens
         </Button>
         <Button
           variant="solid"

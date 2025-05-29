@@ -1,4 +1,4 @@
-import { Flex, SimpleGrid, VStack, Text } from "@chakra-ui/react";
+import { Flex, SimpleGrid, VStack, Text, Box } from "@chakra-ui/react";
 import CreatePost from "./components/CreatePost";
 import PostList from "./components/PostList";
 import SideBar from "./components/SideBar";
@@ -11,9 +11,15 @@ export default function HomePage() {
       </Flex>
       <Flex align="start" justify="center" bg="skyblue" color="white" pt="64px">
         <VStack>
-          <Text fontWeight="bold">Feed</Text>
-          <CreatePost />
+          <div className="flex justify-start w-full">
+            <Text fontWeight="extrabold" fontSize="4xl" color="black">
+              Feed
+            </Text>
+          </div>
           <PostList />
+          <Box position="fixed" height="100vh" p={4} zIndex={1000} top="800px">
+            <CreatePost />
+          </Box>
         </VStack>
       </Flex>
       <Flex></Flex>
