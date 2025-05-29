@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { auth } from "@/lib/firebase/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import Image from "next/image";
-import { Flex, Text, Box } from "@chakra-ui/react";
 
 interface Me {
   photoUrl: string;
@@ -34,30 +33,23 @@ export default function MeComponent() {
   }, []);
 
   return (
-    <Box>
-      {me && (
-        <Flex
-          direction="column"
-          align="center"
-          justify="center"
-          gap={2}
-          mt={8}
-          mb={2}
-        >
-          <Image
-            src={me.photoUrl}
-            alt="Profile Photo"
-            height={100}
-            width={100}
-            className="rounded-full"
-            unoptimized
-          />
-          <Text fontWeight="bold" fontSize="xl" color="black">
-            {me.name}
-          </Text>
-          <Text color="gray.600">{me.email}</Text>
-        </Flex>
-      )}
-    </Box>
+    <div>
+      <div>
+        {me && (
+          <div className="flex items-center flex-col">
+            <Image
+              src={me.photoUrl}
+              alt="Profile Photo"
+              height={100}
+              width={100}
+              className="rounded-full"
+              unoptimized
+            />
+            <h1 className="text-2xl text-black font-semibold">{me.name}</h1>
+            <h1 className="text-gray-500">{me.email}</h1>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }

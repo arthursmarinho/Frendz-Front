@@ -1,18 +1,13 @@
 import GoogleLogin from "@/app/(auth)/signin/components/GoogleLogin";
-import { Flex, Text, VStack } from "@chakra-ui/react";
 
 export const SignInContent = () => {
   return (
-    <Flex bgColor="blue.400" rounded="4xl" px={8} py={8}>
-      <VStack gap={8}>
-        <Text color="white" fontSize="4xl" fontWeight="bold">
-          Entre na Frendz!
-        </Text>
-        <Text color="white" fontWeight="medium">
-          Faça login utilizando sua conta Google
-        </Text>
+    <div className="flex bg-blue-300 flex-col h-screen justify-center items-center">
+      <div className="gap-4 bg-white p-24 rounded-2xl flex justify-center items-center flex-col ">
+        <h1 className="text-4xl font-bold">Entre na Frendz!</h1>
+        <h1 className="text-gray">Faça login utilizando sua conta Google</h1>
         <GoogleLogin />
-      </VStack>
-    </Flex>
+      </div>
+    </div>
   );
 };

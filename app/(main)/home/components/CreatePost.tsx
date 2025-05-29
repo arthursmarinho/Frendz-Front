@@ -1,11 +1,13 @@
 "use client";
 
-import { Box, Button, Flex, Input } from "@chakra-ui/react";
-import { useState } from "react";
+import { use, useState } from "react";
 import { auth } from "@/lib/firebase/firebase";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 export default function CreatePost() {
   const [postTitle, setPostTitle] = useState("");
+  const [post, setPost] = useState([]);
 
   const enviarPedido = async () => {
     try {
@@ -31,6 +33,7 @@ export default function CreatePost() {
       if (response.ok) {
         console.log("Post enviado com sucesso!");
         setPostTitle("");
+        window.location.reload();
       } else {
         console.error("Erro ao enviar post");
       }
@@ -40,28 +43,15 @@ export default function CreatePost() {
   };
 
   return (
-    <Box bgColor="#FFF5DF" px={12} py={12} rounded="3xl">
-      <Flex direction="row" gap={2}>
-        <Input
-          placeholder="O que você está pensando no momento?..."
-          value={postTitle}
-          onChange={(e) => setPostTitle(e.target.value)}
-          bgColor="gray.100"
-          px="16px"
-          w="400px"
-          rounded="full"
-          color="black"
-          _placeholder={{ color: "black" }}
-        />
-        <Button
-          onClick={enviarPedido}
-          bgColor="black"
-          color="white"
-          rounded="full"
-        >
-          Postar
-        </Button>
-      </Flex>
-    </Box>
+    <div className="flex flex-row gap-2 mb-4">
+      <Input
+        placeholder="O que você está pensando no momento?..."
+        value={postTitle}
+        onChange={(e) => setPostTitle(e.target.value)}
+      />
+      <Button onClick={enviarPedido} variant="default">
+        Postar
+      </Button>
+    </div>
   );
 }
