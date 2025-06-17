@@ -1,3 +1,5 @@
+"use client";
+
 import CreatePost from "./components/CreatePost";
 import PostList from "./components/PostList";
 import SideBar from "./components/SideBar";

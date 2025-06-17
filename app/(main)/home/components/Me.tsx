@@ -1,36 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { auth } from "@/lib/firebase/firebase";
-import { onAuthStateChanged } from "firebase/auth";
 import Image from "next/image";
-
-interface Me {
-  photoUrl: string;
-  name: string;
-  email: string;
-}
+import { AppDispatch, RootState } from "@/app/store";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchMe } from "@/app/store/meSlice";
 
 export default function MeComponent() {
-  const [me, setMe] = useState<Me | null>(null);
+  const dispatch = useDispatch() as AppDispatch;
+  const me = useSelector((state: RootState) => state.me.data);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        try {
-          const response = await fetch(
-            `http://localhost:3000/user/me?userId=${user.uid}`
-          );
-          const data = await response.json();
-          setMe(data);
-        } catch (err) {
-          console.log(err);
-        }
-      }
-    });
-
-    return () => unsubscribe();
-  }, []);
+    dispatch(fetchMe());
+  }, [dispatch]);
 
   return (
     <div>

@@ -6,7 +6,9 @@ import Link from "next/link";
 export default function SideButtons() {
   return (
     <div className="flex flex-col gap-4 mt-12">
-      <Button variant="ghost">Feed</Button>
+      <Link href="/">
+        <Button variant="ghost">Feed</Button>
+      </Link>
       <Button variant="ghost">Mensagens</Button>
       <Link href="perfil">
         <Button variant="ghost">Meu Perfil</Button>

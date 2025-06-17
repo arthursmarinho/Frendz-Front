@@ -1,41 +1,35 @@
 "use client";
 
-import { use, useState } from "react";
+import { useState } from "react";
 import { auth } from "@/lib/firebase/firebase";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { PostService } from "@/app/services/PostServices";
 
 export default function CreatePost() {
   const [postTitle, setPostTitle] = useState("");
-  const [post, setPost] = useState([]);
 
-  const enviarPedido = async () => {
+  const submitPost = async () => {
     try {
       const user = auth.currentUser;
       if (!user) return console.error("Usuário não está logado");
 
       const idToken = await user.getIdToken();
 
-      const response = await fetch("http://localhost:3000/posts/createpost", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${idToken}`,
-        },
-        body: JSON.stringify({
-          postTitle,
-          userName: user.displayName || user.email,
-          userPhoto: user.photoURL,
-          userUid: user.uid,
-        }),
+      const { ok, data } = await PostService.createPost({
+        postTitle,
+        userName: user.displayName || user.email || "",
+        userPhoto: user.photoURL || "",
+        userUid: user.uid,
+        idToken,
       });
 
-      if (response.ok) {
-        console.log("Post enviado com sucesso!");
+      if (ok) {
         setPostTitle("");
         window.location.reload();
+        console.log("Post criado com sucesso:", data);
       } else {
-        console.error("Erro ao enviar post");
+        console.error("Erro ao enviar post:", data);
       }
     } catch (err) {
       console.error("Erro na requisição:", err);
@@ -49,7 +43,7 @@ export default function CreatePost() {
         value={postTitle}
         onChange={(e) => setPostTitle(e.target.value)}
       />
-      <Button onClick={enviarPedido} variant="default">
+      <Button onClick={submitPost} variant="default">
         Postar
       </Button>
     </div>

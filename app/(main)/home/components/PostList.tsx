@@ -2,10 +2,9 @@
 
 import { useEffect, useState } from "react";
 
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "@/lib/firebase/firebase";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchMe } from "@/app/store/meSlice";
 import Image from "next/image";
 
 import {
@@ -18,6 +17,8 @@ import {
 } from "@/components/ui/sheet";
 
 import { Trash2 } from "lucide-react";
+import { PostService } from "@/app/services/PostServices";
+import { AppDispatch, RootState } from "@/app/store";
 
 interface FirestoreTimestamp {
   _seconds: number;
@@ -35,46 +36,39 @@ interface Post {
 
 export default function PostList() {
   const [posts, setPosts] = useState<Post[]>([]);
-  const [me, setMe] = useState<{ userUid: string } | null>(null);
+  const dispatch = useDispatch<AppDispatch>();
+  const me = useSelector((state: RootState) => state.me.data);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        try {
-          const response = await fetch(
-            `http://localhost:3000/user/me?userId=${user.uid}`
-          );
-          const data = await response.json();
-          setMe(data);
-          console.log(data);
-        } catch (err) {
-          console.log(err);
-        }
-      }
-    });
+    dispatch(fetchMe());
+  }, [dispatch]);
 
-    return () => unsubscribe();
-  }, []);
+  const searchPosts = async () => {
+    const response = await PostService.getAll();
+    const mappedPosts = response.map((post: any) => ({
+      ...post,
+      createdAt:
+        typeof post.createdAt === "string"
+          ? {
+              _seconds: Math.floor(new Date(post.createdAt).getTime() / 1000),
+              _nanoseconds: 0,
+            }
+          : post.createdAt,
+    }));
+    setPosts(mappedPosts);
+  };
+
   useEffect(() => {
-    const searchPosts = async () => {
-      try {
-        const response = await fetch("http://localhost:3000/posts");
-        const data = await response.json();
-        setPosts(data);
-      } catch (err) {
-        console.error("Erro na requisição:", err);
-      }
-    };
-
     searchPosts();
   }, []);
 
   const handleDelete = async (postId: string) => {
     try {
-      await fetch(`http://localhost:3000/posts/${postId}`, {
-        method: "DELETE",
-      });
-      setPosts((prev) => prev.filter((post) => post.id !== postId));
+      await PostService.deletePost(postId),
+        {
+          method: "DELETE",
+        };
+      searchPosts();
     } catch (err) {
       console.error("Erro ao deletar o post:", err);
     }
@@ -123,13 +117,13 @@ export default function PostList() {
                     <Trash2 className="h-5 w-5" />
                   </Button>
                 </SheetTrigger>
-                <SheetContent>
+                <SheetContent side="right">
                   <SheetHeader>
                     <SheetTitle>Deseja apagar seu Post?</SheetTitle>
                     <SheetDescription className="space-y-4 mt-2">
-                      <p className="text-sm text-gray-600">
+                      <h1 className="text-sm text-gray-600">
                         Essa ação não poderá ser desfeita.
-                      </p>
+                      </h1>
                       <Button
                         size="sm"
                         variant="destructive"
