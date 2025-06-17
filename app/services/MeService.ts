@@ -21,6 +21,7 @@ export const MeService = {
             `http://localhost:3000/user/me?userId=${user.uid}`
           );
           const data = await res.json();
+          console.log(data);
 
           const userData = {
             userUid: data.userUid ?? user.uid,
