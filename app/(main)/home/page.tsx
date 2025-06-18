@@ -9,8 +9,8 @@ export default function HomePage() {
   return (
     <div>
       <Header />
-      <div className="grid grid-cols-3">
-        <div className="flex justify-end">
+      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3">
+        <div className="flex justify-start md:justify-end lg:justify-end mt-12">
           <SideBar />
         </div>
         <div className="flex justify-start w-full flex-col p-12">
@@ -20,7 +20,7 @@ export default function HomePage() {
         </div>
         <div>
           <></>
-        </div>{" "}
+        </div>
       </div>
     </div>
   );

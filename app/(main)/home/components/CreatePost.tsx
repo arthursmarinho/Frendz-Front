@@ -37,7 +37,7 @@ export default function CreatePost() {
   };
 
   return (
-    <div className="flex flex-row gap-2 mb-4">
+    <div className="flex flex-row gap-2 mb-4 mt-12">
       <Input
         placeholder="O que você está pensando no momento?..."
         value={postTitle}

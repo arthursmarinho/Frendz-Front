@@ -1,6 +1,8 @@
 import { auth } from "@/lib/firebase/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
 export const MeService = {
   getMe: () =>
     new Promise<{
@@ -17,9 +19,7 @@ export const MeService = {
         }
 
         try {
-          const res = await fetch(
-            `https://frendz-back.onrender.com/user/me?userId=${user.uid}`
-          );
+          const res = await fetch(`${API_URL}/user/me?userId=${user.uid}`);
           const data = await res.json();
           console.log(data);
 
