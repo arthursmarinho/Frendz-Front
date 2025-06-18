@@ -75,24 +75,26 @@ export default function PostList() {
   };
 
   return (
-    <div className="flex flex-col gap-6 p-4 max-w-2xl mx-auto">
+    <div className="flex flex-col gap-6 p-4 sm:p-6 md:p-8 max-w-2xl mx-auto">
       {posts.map((post) => (
         <div
           key={post.id}
-          className="bg-white shadow-md rounded-xl p-6 border border-gray-200"
+          className="bg-white shadow-md rounded-xl p-4 sm:p-6 border border-gray-200"
         >
-          <div className="flex items-center gap-4 mb-2">
+          <div className="flex items-center gap-3 sm:gap-4 mb-2">
             <Image
               src={post.userPhoto}
               alt={post.userName}
-              width={48}
-              height={48}
+              width={40}
+              height={40}
               unoptimized
-              className="rounded-full border border-gray-300"
+              className="rounded-full border border-gray-300 sm:w-12 sm:h-12"
             />
             <div>
-              <h2 className="font-semibold text-gray-900">{post.userName}</h2>
-              <h1 className="text-sm text-gray-500">
+              <h2 className="font-semibold text-gray-900 text-sm sm:text-base">
+                {post.userName}
+              </h2>
+              <h1 className="text-xs sm:text-sm text-gray-500">
                 {new Date(post.createdAt._seconds * 1000).toLocaleString(
                   "pt-BR",
                   {
@@ -106,36 +108,11 @@ export default function PostList() {
               </h1>
             </div>
           </div>
-
-          <p className="text-gray-800 leading-relaxed mb-4">{post.postTitle}</p>
-
+          <p className="text-gray-800 text-sm sm:text-base leading-relaxed mb-4">
+            {post.postTitle}
+          </p>
           {me?.userUid === post.userUid && (
-            <div className="flex justify-end">
-              <Sheet>
-                <SheetTrigger asChild>
-                  <Button variant="destructive" size="icon">
-                    <Trash2 className="h-5 w-5" />
-                  </Button>
-                </SheetTrigger>
-                <SheetContent side="right">
-                  <SheetHeader>
-                    <SheetTitle>Deseja apagar seu Post?</SheetTitle>
-                    <SheetDescription className="space-y-4 mt-2">
-                      <h1 className="text-sm text-gray-600">
-                        Essa ação não poderá ser desfeita.
-                      </h1>
-                      <Button
-                        size="sm"
-                        variant="destructive"
-                        onClick={() => handleDelete(post.id)}
-                      >
-                        Deletar
-                      </Button>
-                    </SheetDescription>
-                  </SheetHeader>
-                </SheetContent>
-              </Sheet>
-            </div>
+            <div className="flex justify-end"></div>
           )}
         </div>
       ))}

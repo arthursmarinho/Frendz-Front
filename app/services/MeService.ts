@@ -18,7 +18,7 @@ export const MeService = {
 
         try {
           const res = await fetch(
-            `http://localhost:3000/user/me?userId=${user.uid}`
+            `https://frendz-back.onrender.com/user/me?userId=${user.uid}`
           );
           const data = await res.json();
           console.log(data);
