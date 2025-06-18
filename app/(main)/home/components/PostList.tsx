@@ -108,7 +108,9 @@ export default function PostList() {
           </p>
           {me?.userUid === post.userUid && (
             <div className="flex justify-end">
-              <Button onClick={() => deletePost(post.id)}>❌</Button>
+              <Button onClick={() => deletePost(post.id)}>
+                <Trash2 />
+              </Button>
             </div>
           )}
         </div>
