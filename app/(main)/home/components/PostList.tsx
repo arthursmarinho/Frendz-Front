@@ -62,18 +62,6 @@ export default function PostList() {
     searchPosts();
   }, []);
 
-  const handleDelete = async (postId: string) => {
-    try {
-      await PostService.deletePost(postId),
-        {
-          method: "DELETE",
-        };
-      searchPosts();
-    } catch (err) {
-      console.error("Erro ao deletar o post:", err);
-    }
-  };
-
   return (
     <div className="flex flex-col gap-6 p-4 sm:p-6 md:p-8 max-w-2xl mx-auto">
       {posts.map((post) => (
@@ -112,7 +100,9 @@ export default function PostList() {
             {post.postTitle}
           </p>
           {me?.userUid === post.userUid && (
-            <div className="flex justify-end"></div>
+            <div className="flex justify-end">
+              <h1>Apagar</h1>
+            </div>
           )}
         </div>
       ))}
