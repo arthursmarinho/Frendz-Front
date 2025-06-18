@@ -58,6 +58,13 @@ export default function PostList() {
     setPosts(mappedPosts);
   };
 
+  const deletePost = async (indexToRemove: string) => {
+    await PostService.deletePost(indexToRemove);
+    setPosts((prevPosts) =>
+      prevPosts.filter((post) => post.id !== indexToRemove)
+    );
+  };
+
   useEffect(() => {
     searchPosts();
   }, []);
@@ -101,7 +108,7 @@ export default function PostList() {
           </p>
           {me?.userUid === post.userUid && (
             <div className="flex justify-end">
-              <h1>Apagar</h1>
+              <Button onClick={() => deletePost(post.id)}>❌</Button>
             </div>
           )}
         </div>
