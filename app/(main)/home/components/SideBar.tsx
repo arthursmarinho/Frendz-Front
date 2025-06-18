@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import Me from "./Me";
 import SideButtons from "./SideButtons";
