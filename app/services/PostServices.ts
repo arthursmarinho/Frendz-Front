@@ -11,13 +11,6 @@ export type Post = {
   createdAt: string;
 };
 
-type CreatePostPayload = {
-  postTitle: string;
-  userName: string;
-  userPhoto: string;
-  userUid: string;
-};
-
 type CreatePostDto = {
   postTitle: string;
   userName: string;

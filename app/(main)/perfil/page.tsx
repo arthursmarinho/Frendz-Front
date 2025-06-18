@@ -4,6 +4,12 @@ import { auth } from "@/lib/firebase/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { PostService } from "@/app/services/PostServices";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/app/store";
+import { fetchMe } from "@/app/store/meSlice";
+import { Button } from "@/components/ui/button";
+import { Trash2 } from "lucide-react";
 
 interface Me {
   photoUrl: string;
@@ -27,41 +33,39 @@ interface Post {
 }
 
 export default function Perfil() {
-  const [me, setMe] = useState<Me | null>(null);
+  const dispatch = useDispatch<AppDispatch>();
+  const me = useSelector((state: RootState) => state.me.data);
   const [posts, setPosts] = useState<Post[]>([]);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        try {
-          const response = await fetch(
-            `http://localhost:3000/user/me?userId=${user.uid}`
-          );
-          const data = await response.json();
-          setMe(data);
-        } catch (err) {
-          console.log(err);
-        }
-      }
-    });
+    dispatch(fetchMe());
+  }, [dispatch]);
 
-    return () => unsubscribe();
-  }, []);
+  const searchPosts = async () => {
+    const response = await PostService.getAll();
+    const mappedPosts = response.map((post: any) => ({
+      ...post,
+      createdAt:
+        typeof post.createdAt === "string"
+          ? {
+              _seconds: Math.floor(new Date(post.createdAt).getTime() / 1000),
+              _nanoseconds: 0,
+            }
+          : post.createdAt,
+    }));
+    setPosts(mappedPosts);
+  };
+
+  const deletePost = async (indexToRemove: string) => {
+    await PostService.deletePost(indexToRemove);
+    setPosts((prevPosts) =>
+      prevPosts.filter((post) => post.id !== indexToRemove)
+    );
+  };
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const response = await fetch("http://localhost:3000/posts");
-        const data = await response.json();
-        setPosts(data);
-      } catch (err) {
-        console.error("Erro ao buscar posts:", err);
-      }
-    };
-
-    fetchPosts();
+    searchPosts();
   }, []);
-
   const myPosts = posts.filter((post) => post.userUid === me?.userUid);
 
   return (
@@ -104,6 +108,13 @@ export default function Perfil() {
                       post.createdAt._seconds * 1000
                     ).toLocaleDateString("pt-BR")}
                   </p>
+                  {me?.userUid === post.userUid && (
+                    <div className="flex justify-end">
+                      <Button onClick={() => deletePost(post.id)}>
+                        <Trash2 />
+                      </Button>
+                    </div>
+                  )}
                 </div>
               </div>
               <p className="text-gray-800">{post.postTitle}</p>
