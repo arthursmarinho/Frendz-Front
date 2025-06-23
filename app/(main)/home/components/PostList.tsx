@@ -8,13 +8,16 @@ import { fetchMe } from "@/app/store/meSlice";
 import Image from "next/image";
 
 import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 import { Trash2 } from "lucide-react";
 import { PostService } from "@/app/services/PostServices";
@@ -108,9 +111,27 @@ export default function PostList() {
           </p>
           {me?.userUid === post.userUid && (
             <div className="flex justify-end">
-              <Button onClick={() => deletePost(post.id)}>
-                <Trash2 />
-              </Button>
+              <AlertDialog>
+                <AlertDialogTrigger>
+                  <Trash2 color="red" />
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      Deseja apagar seu post? Essa ação não podera ser desfeita.
+                    </AlertDialogTitle>
+                    <AlertDialogDescription></AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                    <AlertDialogAction>
+                      <Button onClick={() => deletePost(post.id)}>
+                        Apagar
+                      </Button>
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </div>
           )}
         </div>

@@ -9,17 +9,21 @@ export default function HomePage() {
   return (
     <div>
       <Header />
-      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3">
-        <div className="flex justify-start md:justify-end lg:justify-end mt-12">
+      <div className="flex">
+        <div className="hidden md:block fixed h-full w-64 mt-12">
           <SideBar />
         </div>
-        <div className="flex justify-start w-full flex-col p-12">
+
+        <div className="w-0 md:w-64"></div>
+
+        <div className="flex-1 flex flex-col p-12 ml-0 md:ml-0 lg:ml-0">
+          <div className="md:hidden mb-4">
+            <SideBar />
+          </div>
+
           <CreatePost />
-          <h1 className="text-4xl font-bold">Feed</h1>
+          <h1 className="text-4xl font-bold fade-in duration-500">Feed</h1>
           <PostList />
-        </div>
-        <div>
-          <></>
         </div>
       </div>
     </div>

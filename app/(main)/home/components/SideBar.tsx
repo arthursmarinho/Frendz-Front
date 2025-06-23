@@ -12,7 +12,7 @@ export default function SideBar() {
     <div>
       {!isOpen && (
         <button
-          className="sm:hidden mt-12 fixed p-4 border-0 flex justify-start transition-all duration-700"
+          className="sm:hidden fixed bg-white rounded-sm flex mb-12 transition-all duration-700"
           onClick={() => setIsOpen(true)}
         >
           <Menu />

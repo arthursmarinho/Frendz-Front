@@ -5,12 +5,29 @@ import { auth } from "@/lib/firebase/firebase";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { PostService } from "@/app/services/PostServices";
+import { toast } from "sonner";
 
 export default function CreatePost() {
   const [postTitle, setPostTitle] = useState("");
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+
+    if (value.length > 50) {
+      toast("Limite de caracteres atingido.");
+      return;
+    }
+
+    setPostTitle(value);
+  };
+
   const submitPost = async () => {
     try {
+      if (postTitle.length > 50) {
+        toast("Limite de caracteres atingido.");
+        return;
+      }
+
       const user = auth.currentUser;
       if (!user) return console.error("Usuário não está logado");
 
@@ -26,8 +43,8 @@ export default function CreatePost() {
 
       if (ok) {
         setPostTitle("");
+        toast("Postado!");
         window.location.reload();
-        console.log("Post criado com sucesso:", data);
       } else {
         console.error("Erro ao enviar post:", data);
       }
@@ -41,7 +58,7 @@ export default function CreatePost() {
       <Input
         placeholder="O que você está pensando no momento?..."
         value={postTitle}
-        onChange={(e) => setPostTitle(e.target.value)}
+        onChange={handleInputChange}
       />
       <Button onClick={submitPost} variant="default">
         Postar
