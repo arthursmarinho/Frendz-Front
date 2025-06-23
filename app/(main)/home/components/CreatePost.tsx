@@ -10,31 +10,26 @@ import { toast } from "sonner";
 export default function CreatePost() {
   const [postTitle, setPostTitle] = useState("");
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-
-    if (value.length > 50) {
-      toast("Limite de caracteres atingido.");
-      return;
-    }
-
-    setPostTitle(value);
-  };
-
   const submitPost = async () => {
     try {
-      if (postTitle.length > 50) {
+      const trimmedPost = postTitle.trim();
+
+      if (trimmedPost === "") {
+        toast("Digite algo para começar...");
+        return;
+      }
+
+      if (trimmedPost.length > 50) {
         toast("Limite de caracteres atingido.");
         return;
       }
 
       const user = auth.currentUser;
-      if (!user) return console.error("Usuário não está logado");
-
+      if (!user) return console.log("Usuário não está logado");
       const idToken = await user.getIdToken();
 
       const { ok, data } = await PostService.createPost({
-        postTitle,
+        postTitle: trimmedPost,
         userName: user.displayName || user.email || "",
         userPhoto: user.photoURL || "",
         userUid: user.uid,
@@ -58,7 +53,7 @@ export default function CreatePost() {
       <Input
         placeholder="O que você está pensando no momento?..."
         value={postTitle}
-        onChange={handleInputChange}
+        onChange={(e) => setPostTitle(e.target.value)}
       />
       <Button onClick={submitPost} variant="default">
         Postar
