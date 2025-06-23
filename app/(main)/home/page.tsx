@@ -4,6 +4,7 @@ import Header from "@/components/Header/header";
 import CreatePost from "./components/CreatePost";
 import PostList from "./components/PostList";
 import SideBar from "./components/SideBar";
+import { motion } from "framer-motion";
 
 export default function HomePage() {
   return (
@@ -22,7 +23,17 @@ export default function HomePage() {
           </div>
 
           <CreatePost />
-          <h1 className="text-4xl font-bold fade-in duration-500">Feed</h1>
+          <motion.h1
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{
+              duration: 0.4,
+              scale: { type: "spring", visualDuration: 0.4, bounce: 0.5 },
+            }}
+            className="text-3xl font-bold"
+          >
+            Feed
+          </motion.h1>
           <PostList />
         </div>
       </div>

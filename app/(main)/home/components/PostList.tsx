@@ -12,12 +12,12 @@ import {
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Skeleton } from "@/components/ui/skeleton";
 
 import { Trash2 } from "lucide-react";
 import { PostService } from "@/app/services/PostServices";
@@ -39,12 +39,18 @@ interface Post {
 
 export default function PostList() {
   const [posts, setPosts] = useState<Post[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch<AppDispatch>();
   const me = useSelector((state: RootState) => state.me.data);
 
   useEffect(() => {
     dispatch(fetchMe());
   }, [dispatch]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 2000);
+    return () => clearTimeout(timer);
+  }, []);
 
   const searchPosts = async () => {
     const response = await PostService.getAll();
@@ -73,69 +79,76 @@ export default function PostList() {
   }, []);
 
   return (
-    <div className="flex flex-col gap-6 p-4 sm:p-6 md:p-8 max-w-2xl mx-auto">
-      {posts.map((post) => (
-        <div
-          key={post.id}
-          className="bg-white shadow-md rounded-xl p-4 sm:p-6 border border-gray-200"
-        >
-          <div className="flex items-center gap-3 sm:gap-4 mb-2">
-            <Image
-              src={post.userPhoto}
-              alt={post.userName}
-              width={40}
-              height={40}
-              unoptimized
-              className="rounded-full border border-gray-300 sm:w-12 sm:h-12"
-            />
-            <div>
-              <h2 className="font-semibold text-gray-900 text-sm sm:text-base">
-                {post.userName}
-              </h2>
-              <h1 className="text-xs sm:text-sm text-gray-500">
-                {new Date(post.createdAt._seconds * 1000).toLocaleString(
-                  "pt-BR",
-                  {
-                    day: "2-digit",
-                    month: "2-digit",
-                    year: "numeric",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  }
-                )}
-              </h1>
-            </div>
-          </div>
-          <p className="text-gray-800 text-sm sm:text-base leading-relaxed mb-4">
-            {post.postTitle}
-          </p>
-          {me?.userUid === post.userUid && (
-            <div className="flex justify-end">
-              <AlertDialog>
-                <AlertDialogTrigger>
-                  <Trash2 color="red" />
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>
-                      Deseja apagar seu post? Essa ação não podera ser desfeita.
-                    </AlertDialogTitle>
-                    <AlertDialogDescription></AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                    <AlertDialogAction>
-                      <Button onClick={() => deletePost(post.id)}>
-                        Apagar
-                      </Button>
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-            </div>
-          )}
+    <div className="flex flex-col w-[300px] sm:w-[100px] md:w-[500px] lg:w-[600px] mx-auto">
+      {isLoading ? (
+        <div className="flex flex-col gap-4 mt-12">
+          <Skeleton className="w-40 h-4 rounded mb-2" />
+          <Skeleton className="w-56 h-4 rounded" />
         </div>
-      ))}
+      ) : (
+        posts.map((post) => (
+          <div
+            key={post.id}
+            className="bg-white rounded-xl border border-gray-200 mt-12 p-12"
+          >
+            <div className="flex items-center ">
+              <Image
+                src={post.userPhoto}
+                alt={post.userName}
+                width={40}
+                height={40}
+                unoptimized
+                className="rounded-full border border-gray-300 m-2"
+              />
+              <div>
+                <h2 className="font-semibold text-gray-900 text-sm sm:text-base">
+                  {post.userName}
+                </h2>
+                <h1 className="text-xs sm:text-sm text-gray-500">
+                  {new Date(post.createdAt._seconds * 1000).toLocaleString(
+                    "pt-BR",
+                    {
+                      day: "2-digit",
+                      month: "2-digit",
+                      year: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    }
+                  )}
+                </h1>
+              </div>
+            </div>
+            <p className="text-gray-800 text-sm sm:text-base leading-relaxed mb-4 break-words">
+              {post.postTitle}
+            </p>
+            {me?.userUid === post.userUid && (
+              <div className="flex justify-end">
+                <AlertDialog>
+                  <AlertDialogTrigger>
+                    <Trash2 color="red" />
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        Deseja apagar seu post? Essa ação não poderá ser
+                        desfeita.
+                      </AlertDialogTitle>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                      <AlertDialogAction>
+                        <Button onClick={() => deletePost(post.id)}>
+                          Apagar
+                        </Button>
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </div>
+            )}
+          </div>
+        ))
+      )}
     </div>
   );
 }

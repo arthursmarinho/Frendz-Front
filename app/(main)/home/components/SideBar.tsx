@@ -1,12 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Me from "./Me";
 import SideButtons from "./SideButtons";
 import { ChevronLeft, Menu } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function SideBar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 2000); // 2 segundos de loading
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <div>
@@ -32,8 +39,18 @@ export default function SideBar() {
             <ChevronLeft />
           </button>
         </div>
-        <Me />
-        <SideButtons />
+
+        {isLoading ? (
+          <Skeleton className="w-24 h-24 rounded-full mb-4" />
+        ) : (
+          <Me />
+        )}
+
+        {isLoading ? (
+          <Skeleton className="w-40 h-10 rounded mb-2" />
+        ) : (
+          <SideButtons />
+        )}
       </div>
     </div>
   );

@@ -22,12 +22,16 @@ interface MeState {
   } | null;
   loading: boolean;
   error: string | null;
+  isAuthenticated: false;
+  user: null;
 }
 
 const initialState: MeState = {
   data: null,
   loading: false,
   error: null,
+  isAuthenticated: false,
+  user: null,
 };
 
 const meSlice = createSlice({
