@@ -11,7 +11,7 @@ export default function SideBar() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 2000); // 2 segundos de loading
+    const timer = setTimeout(() => setIsLoading(false), 2000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -19,10 +19,10 @@ export default function SideBar() {
     <div>
       {!isOpen && (
         <button
-          className="sm:hidden fixed bg-white rounded-sm flex mb-12 transition-all duration-700"
+          className="sm:hidden fixed left-4  top-12 bg-white rounded-sm flex transition-all duration-700"
           onClick={() => setIsOpen(true)}
         >
-          <Menu />
+          <Menu size={32} />
         </button>
       )}
 
