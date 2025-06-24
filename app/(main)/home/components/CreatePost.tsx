@@ -61,13 +61,13 @@ export default function CreatePost() {
   }, []);
 
   return (
-    <div className="flex flex-row gap-2 mb-4 mt-12">
+    <div className="flex flex-col sm:flex-row gap-2 mb-4 mt-12">
       <Input
         placeholder={placeholder}
         value={postTitle}
         onChange={(e) => setPostTitle(e.target.value)}
         maxLength={50}
-        className="placeholder:text-[11px] md:placeholder:text-base w-[200px] md:w-full"
+        className="placeholder:text-[11px] md:placeholder:text-base w-full md:w-full"
       />
       <p className="text-gray-400">{postTitle.length}/50 caracteres</p>
       <Button onClick={submitPost} variant="default">
