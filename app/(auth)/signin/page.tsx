@@ -1,5 +1,3 @@
-"use client";
-
 import { SignInContent } from "./components/SignInContent";
 import HeroContent from "./components/HeroContent";
 import ProtectedHome from "@/app/middleware/homeMiddleware";
