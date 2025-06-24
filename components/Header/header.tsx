@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+
 export default function Header() {
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [isInstallable, setIsInstallable] = useState(false);
@@ -32,14 +33,18 @@ export default function Header() {
     });
   };
 
-  if (!isInstallable) return null;
-
   return (
-    <div className="h-16 fixed rounded-full bg-white w-full shadow-black flex items-center px-4 sm:px-8 md:px-12">
+    <div className="h-16 fixed top-0 left-0 right-0 rounded-full bg-white w-full shadow-black flex items-center px-4 sm:px-8 md:px-12 z-50">
       <h1 className="font-bold text-2xl">Frendz</h1>
-      <Button onClick={handleInstallClick} className="ml-auto animate-bounce">
-        Instalar App
-      </Button>
+
+      {isInstallable && (
+        <Button
+          onClick={handleInstallClick}
+          className="fixed bottom-4 right-4 animate-bounce"
+        >
+          Instalar App
+        </Button>
+      )}
     </div>
   );
 }
