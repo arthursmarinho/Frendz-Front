@@ -17,7 +17,7 @@ export default function HomePage() {
 
         <div className="w-0 md:w-64"></div>
 
-        <div className="flex-1 flex flex-col p-12 ml-0 md:ml-0 lg:ml-0">
+        <div className="flex-1 flex flex-col p-4 sm:p-6 md:p-8 lg:p-12 ml-0">
           <div className="md:hidden mb-4">
             <SideBar />
           </div>
