@@ -54,16 +54,18 @@ export default function PostList() {
 
   const searchPosts = async () => {
     const response = await PostService.getAll();
-    const mappedPosts = response.map((post: any) => ({
-      ...post,
-      createdAt:
-        typeof post.createdAt === "string"
-          ? {
-              _seconds: Math.floor(new Date(post.createdAt).getTime() / 1000),
-              _nanoseconds: 0,
-            }
-          : post.createdAt,
-    }));
+    const mappedPosts = response
+      .map((post: any) => ({
+        ...post,
+        createdAt:
+          typeof post.createdAt === "string"
+            ? {
+                _seconds: Math.floor(new Date(post.createdAt).getTime() / 1000),
+                _nanoseconds: 0,
+              }
+            : post.createdAt,
+      }))
+      .sort((a: Post, b: Post) => b.createdAt._seconds - a.createdAt._seconds);
     setPosts(mappedPosts);
   };
 

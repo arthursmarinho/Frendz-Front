@@ -5,6 +5,7 @@ import Me from "./Me";
 import SideButtons from "./SideButtons";
 import { ChevronLeft, Menu } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import Link from "next/link";
 
 export default function SideBar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,12 +19,14 @@ export default function SideBar() {
   return (
     <div>
       {!isOpen && (
-        <button
-          className="sm:hidden fixed left-4 mt-4 top-12 bg-white rounded-sm flex transition-all duration-700"
-          onClick={() => setIsOpen(true)}
-        >
-          <Menu size={32} />
-        </button>
+        <Link href="#home">
+          <button
+            className="sm:hidden fixed left-4 mt-4 top-12 bg-white rounded-sm flex transition-all duration-700"
+            onClick={() => setIsOpen(true)}
+          >
+            <Menu size={32} />
+          </button>
+        </Link>
       )}
 
       <div

@@ -10,7 +10,7 @@ export default function HomePage() {
   return (
     <div>
       <Header />
-      <div className="flex">
+      <div className="flex" id="home">
         <div className="hidden md:block fixed h-full w-64 mt-12">
           <SideBar />
         </div>
