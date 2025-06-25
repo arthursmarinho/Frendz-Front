@@ -30,7 +30,7 @@ export default function Login() {
 
   return (
     <div>
-      <Button variant="outline" onClick={loginComGoogle}>
+      <Button variant="default" onClick={loginComGoogle}>
         <FcGoogle className="w-5 h-5 mr-2" />
         Entrar com Google
       </Button>
