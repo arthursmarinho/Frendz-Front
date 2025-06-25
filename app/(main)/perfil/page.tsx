@@ -13,17 +13,13 @@ import Me from "../home/components/Me";
 import Header from "@/components/Header/header";
 import Link from "next/link";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@radix-ui/react-alert-dialog";
-import {
-  AlertDialogFooter,
-  AlertDialogHeader,
-} from "@/components/ui/alert-dialog";
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 interface Me {
   photoUrl: string;
@@ -145,27 +141,28 @@ export default function Perfil() {
                   </p>
                   {me?.userUid === post.userUid && (
                     <div className="flex justify-end">
-                      <AlertDialog>
-                        <AlertDialogTrigger>
-                          <Trash2 color="red" />
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>
-                              Deseja apagar seu post? Essa ação não poderá ser
-                              desfeita.
-                            </AlertDialogTitle>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                            <AlertDialogAction>
-                              <Button onClick={() => deletePost(post.id)}>
-                                Apagar
+                      <Sheet>
+                        <SheetTrigger asChild>
+                          <Button variant="ghost">
+                            <Trash2 color="red" />
+                          </Button>
+                        </SheetTrigger>
+                        <SheetContent>
+                          <SheetHeader>
+                            <SheetTitle>
+                              Essa ação não podera ser desfeita!
+                            </SheetTitle>
+                            <SheetDescription className="space-y-4 mt-2">
+                              <Button
+                                variant="destructive"
+                                onClick={() => deletePost(post.id)}
+                              >
+                                Apagar post
                               </Button>
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
+                            </SheetDescription>
+                          </SheetHeader>
+                        </SheetContent>
+                      </Sheet>
                     </div>
                   )}
                 </div>
