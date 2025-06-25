@@ -23,7 +23,7 @@ export default function InstallPWAButton() {
   const handleClick = () => {
     if (!deferredPrompt) return;
 
-    deferredPrompt.prompt(); // Exibe o prompt de instalação
+    deferredPrompt.prompt();
 
     deferredPrompt.userChoice.then((choiceResult: any) => {
       if (choiceResult.outcome === "accepted") {

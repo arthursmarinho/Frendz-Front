@@ -21,7 +21,6 @@ export const MeService = {
         try {
           const res = await fetch(`${API_URL}/user/me?userId=${user.uid}`);
           const data = await res.json();
-          console.log(data);
 
           const userData = {
             userUid: data.userUid ?? user.uid,
